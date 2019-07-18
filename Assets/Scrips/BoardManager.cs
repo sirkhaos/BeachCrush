@@ -25,11 +25,30 @@ public class BoardManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        Vector2 offset = currentCoin.GetComponent<BoxCollider2D>().size;
+        CreateInitialBoard(offset);
     }
 
     private void CreateInitialBoard(Vector2 offset)
     {
+        coins = new GameObject[xSize, ySize];
 
+        float startX = this.transform.position.x;
+        float startY = this.transform.position.y;
+
+        for(int i = 0; i<xSize; i++)
+        {
+            for(int j=0; j<ySize; j++)
+            {
+                GameObject newCoin = Instantiate(currentCoin, new Vector3(startX + (offset.x * i), startY + (offset.y * j), 0),currentCoin.transform.rotation);
+                newCoin.name = string.Format("Coin[{0}],[{1}]", i, j);
+                Sprite sprite = prefabs[Random.Range(0, prefabs.Count)];
+                newCoin.GetComponent<SpriteRenderer>().sprite = sprite;
+                newCoin.GetComponent<Coin>().id=-1;
+                newCoin.transform.parent = this.transform;
+                coins[i, j] = newCoin;
+            }
+        }
     }
 
     // Update is called once per frame

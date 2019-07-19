@@ -36,15 +36,20 @@ public class BoardManager : MonoBehaviour
         float startX = this.transform.position.x;
         float startY = this.transform.position.y;
 
+        int idX = -1; 
         for(int i = 0; i<xSize; i++)
         {
             for(int j=0; j<ySize; j++)
             {
                 GameObject newCoin = Instantiate(currentCoin, new Vector3(startX + (offset.x * i), startY + (offset.y * j), 0),currentCoin.transform.rotation);
                 newCoin.name = string.Format("Coin[{0}],[{1}]", i, j);
-                Sprite sprite = prefabs[Random.Range(0, prefabs.Count)];
+                do
+                {
+                    idX = Random.Range(0, prefabs.Count);
+                } while ((i > 0 && idX == coins[i - 1, j].GetComponent<Coin>().id) || (j > 0 && idX == coins[i, j - 1].GetComponent<Coin>().id));
+                Sprite sprite = prefabs[idX];
                 newCoin.GetComponent<SpriteRenderer>().sprite = sprite;
-                newCoin.GetComponent<Coin>().id=-1;
+                newCoin.GetComponent<Coin>().id=idX;
                 newCoin.transform.parent = this.transform;
                 coins[i, j] = newCoin;
             }

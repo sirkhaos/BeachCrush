@@ -12,7 +12,7 @@ public class BoardManager : MonoBehaviour
     public bool isShifting { get; set; }
 
     private GameObject[,] coins;
-
+    private Coin selectedCoin;
 
     // Start is called before the first frame update
     void Start()

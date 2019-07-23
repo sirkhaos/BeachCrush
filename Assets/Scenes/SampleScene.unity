@@ -254,8 +254,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1856485845
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: 9180251791023625898, guid: 30a33f78602a2a940b20d1c3c11a9fb7,
     type: 3}
@@ -331,7 +331,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1735776679}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.5, y: -8.5, z: -15}
+  m_LocalPosition: {x: -3.5, y: -8.5, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

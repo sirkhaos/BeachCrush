@@ -24,15 +24,73 @@ public class Coin : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void SelectCoin()
     {
-        
+        isSelected = true;
+        spriteRenderer.color = selectedColor;
+        previousSelected = gameObject.GetComponent<Coin>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void DeselectCoin()
     {
-        
+        isSelected = false;
+        spriteRenderer.color = Color.white;
+        previousSelected = null;
+    }
+
+    private void OnMouseDown()
+    {
+        if (spriteRenderer.sprite == null || BoardManager.sharedInstance.isShifting)
+        {
+            return;
+        }
+        else
+        {
+            if (isSelected)
+            {
+                DeselectCoin();
+            }
+            else
+            {
+                if (previousSelected == null)
+                {
+                    SelectCoin();
+                }
+                else
+                {
+                    SwapSprite(previousSelected);
+                    previousSelected.DeselectCoin();
+                }
+            }
+        }
+    }
+
+    public void SwapSprite(Coin newCoin)
+    {
+        if (spriteRenderer.sprite == newCoin.GetComponent<SpriteRenderer>().sprite) 
+        {
+            return;
+        }
+
+            Sprite temp = this.spriteRenderer.sprite;
+            this.spriteRenderer.sprite = newCoin.spriteRenderer.sprite;
+            newCoin.spriteRenderer.sprite = temp;
+            int nid = this.id;
+            this.id = newCoin.id;
+            newCoin.id = nid;
+
+    }
+
+    private GameObject GetNeighbor(Vector2 direction)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(this.transform.position, direction);
+        if (hit.collider != null)
+        {
+            return hit.collider.gameObject;
+        }
+        else
+        {
+            return null;
+        }
     }
 }

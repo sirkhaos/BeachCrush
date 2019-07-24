@@ -58,8 +58,18 @@ public class Coin : MonoBehaviour
                 }
                 else
                 {
-                    SwapSprite(previousSelected);
-                    previousSelected.DeselectCoin();
+                    if (CanSwipe())
+                    {
+                        SwapSprite(previousSelected);
+                        previousSelected.FindAllMatches();
+                        previousSelected.DeselectCoin();
+                        FindAllMatches();
+                    }
+                    else
+                    {
+                        previousSelected.DeselectCoin();
+                        SelectCoin();
+                    }
                 }
             }
         }
@@ -93,4 +103,75 @@ public class Coin : MonoBehaviour
             return null;
         }
     }
+
+    private List<GameObject> GetAllNeighbors()
+    {
+        List<GameObject> neighbors = new List<GameObject>();
+
+        foreach(Vector2 direction in direcciones)
+        {
+            neighbors.Add(GetNeighbor(direction));
+
+        }
+
+        return neighbors;
+    }
+
+    private bool CanSwipe()
+    {
+        return GetAllNeighbors().Contains(previousSelected.gameObject);
+    }
+
+    private List<GameObject> FindMatch(Vector2 direction)
+    {
+        List<GameObject> matchingCoins = new List<GameObject>();
+
+        RaycastHit2D hit = Physics2D.Raycast(this.transform.position, direction);
+        while (hit.collider != null && hit.collider.GetComponent<SpriteRenderer>().sprite == spriteRenderer.sprite)
+        {
+            matchingCoins.Add(hit.collider.gameObject);
+            hit = Physics2D.Raycast(hit.collider.transform.position, direction);
+        }
+        return matchingCoins;
+    }
+
+    private bool ClearMatch(Vector2[] directions)
+    {
+        List<GameObject> matchingCoins = new List<GameObject>();
+        foreach(Vector2 direction in directions)
+        {
+            matchingCoins.AddRange(FindMatch(direction));
+        }
+        if (matchingCoins.Count >= BoardManager.minCoinsToMatch)
+        {
+            foreach(GameObject coin in matchingCoins)
+            {
+                coin.GetComponent<SpriteRenderer>().sprite = null;
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+    public void FindAllMatches()
+    {
+        if (spriteRenderer.sprite == null)
+        {
+            return;
+        }
+
+        bool hMatch = ClearMatch(new Vector2[2] { Vector2.left, Vector2.right });
+        bool vMatch = ClearMatch(new Vector2[2] { Vector2.up, Vector2.down });
+
+        if (hMatch || vMatch)
+        {
+            spriteRenderer.sprite = null;
+        }
+    }
+
+
 }

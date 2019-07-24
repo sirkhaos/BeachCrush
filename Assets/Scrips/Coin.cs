@@ -64,6 +64,9 @@ public class Coin : MonoBehaviour
                         previousSelected.FindAllMatches();
                         previousSelected.DeselectCoin();
                         FindAllMatches();
+
+                        StopCoroutine(BoardManager.sharedInstance.FindNullCoins());
+                        StartCoroutine(BoardManager.sharedInstance.FindNullCoins());
                     }
                     else
                     {

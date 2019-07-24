@@ -57,6 +57,50 @@ public class BoardManager : MonoBehaviour
             }
         }
     }
+
+    public IEnumerator FindNullCoins()
+    {
+        for(int i = 0; i < xSize; i++)
+        {
+            for(int j = 0; j < ySize; j++)
+            {
+                if (coins[i, j].GetComponent<SpriteRenderer>().sprite == null)
+                {
+                    yield return StartCoroutine(MakeCoinsFall(i, j));
+                    break;
+                }
+            }
+        }
+    }
+
+    private IEnumerator MakeCoinsFall(int x, int yStart, float shiftDelay=0.05f)
+    {
+        isShifting = true;
+
+        List<SpriteRenderer> renderes = new List<SpriteRenderer>();
+        int nullcoins = 0;
+
+        for (int y = yStart; y < ySize; y++)
+        {
+            SpriteRenderer spriteRenderer = coins[x, y].GetComponent<SpriteRenderer>();
+            if (spriteRenderer.sprite == null)
+            {
+                nullcoins++;
+            }
+            renderes.Add(spriteRenderer);
+        }
+        for(int i = 0; i < nullcoins; i++)
+        {
+            yield return new WaitForSeconds(shiftDelay);
+            for(int j = 0; j < renderes.Count - 1; j++)
+            {
+                renderes[j].sprite = renderes[j + 1].sprite;
+                renderes[j + 1].sprite = null;
+            }
+        }
+        isShifting = false;
+    }
+
     /*
     private List<GameObject> FindMatch(Vector2 direction)
     {

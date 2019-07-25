@@ -95,16 +95,34 @@ public class BoardManager : MonoBehaviour
             for(int j = 0; j < renderes.Count - 1; j++)
             {
                 renderes[j].sprite = renderes[j + 1].sprite;
-                renderes[j + 1].sprite = null;
+                renderes[j + 1].sprite = GetNewCoin(x,ySize-1);
             }
         }
         isShifting = false;
     }
 
-    /*
-    private List<GameObject> FindMatch(Vector2 direction)
+    private Sprite GetNewCoin(int x, int y)
     {
-        List<GameObject> matchingCoins = new List<GameObject>();
-
-    }*/
+        List<Sprite> possibleCoins = new List<Sprite>();
+        possibleCoins.AddRange(prefabs);
+        if (x > 0)
+        {
+            possibleCoins.Remove(coins[x - 1, y].GetComponent<SpriteRenderer>().sprite);
+        }
+        /*else
+        {*/
+            if (x < xSize - 1)
+            {
+                possibleCoins.Remove(coins[x + 1, y].GetComponent<SpriteRenderer>().sprite);
+            }
+            /*else
+            {*/
+                if (y > 0)
+                {
+                    possibleCoins.Remove(coins[x, y - 1].GetComponent<SpriteRenderer>().sprite);
+                }
+            //}
+        //}
+        return possibleCoins[Random.Range(0, possibleCoins.Count)];
+    }
 }

@@ -64,6 +64,7 @@ public class Coin : MonoBehaviour
                         previousSelected.FindAllMatches();
                         previousSelected.DeselectCoin();
                         FindAllMatches();
+                        GUIManager.sharedInstance.MovesCounter--;
                     }
                     else
                     {

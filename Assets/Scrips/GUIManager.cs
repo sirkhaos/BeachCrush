@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GUIManager : MonoBehaviour
 {
@@ -35,6 +36,11 @@ public class GUIManager : MonoBehaviour
         {
             movesCounter = value;
             moveText.text = "Moves: " + movesCounter;
+            if (movesCounter <= 0)
+            {
+                movesCounter = 0;
+                StartCoroutine(GameOver());
+            }
         }
     }
 
@@ -54,9 +60,11 @@ public class GUIManager : MonoBehaviour
         scoreText.text = "Score: " + score;
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator GameOver()
     {
-        
+        yield return new WaitUntil(() => !BoardManager.sharedInstance.isShifting);
+        yield return new WaitForSeconds(0.25f);
+        //TODO: llamado de la pantalla de gameoverS
+
     }
 }

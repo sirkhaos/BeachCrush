@@ -60,15 +60,22 @@ public class BoardManager : MonoBehaviour
 
     public IEnumerator FindNullCoins()
     {
-        for(int i = 0; i < xSize; i++)
+        for (int i = 0; i < xSize; i++)
         {
-            for(int j = 0; j < ySize; j++)
+            for (int j = 0; j < ySize; j++)
             {
                 if (coins[i, j].GetComponent<SpriteRenderer>().sprite == null)
                 {
                     yield return StartCoroutine(MakeCoinsFall(i, j));
                     break;
                 }
+            }
+        }
+        for (int i = 0; i < xSize; i++)
+        {
+            for (int j = 0; j < ySize; j++)
+            {
+                coins[i, j].GetComponent<Coin>().FindAllMatches();
             }
         }
     }

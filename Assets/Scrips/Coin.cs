@@ -64,9 +64,6 @@ public class Coin : MonoBehaviour
                         previousSelected.FindAllMatches();
                         previousSelected.DeselectCoin();
                         FindAllMatches();
-
-                        StopCoroutine(BoardManager.sharedInstance.FindNullCoins());
-                        StartCoroutine(BoardManager.sharedInstance.FindNullCoins());
                     }
                     else
                     {
@@ -173,6 +170,8 @@ public class Coin : MonoBehaviour
         if (hMatch || vMatch)
         {
             spriteRenderer.sprite = null;
+            StopCoroutine(BoardManager.sharedInstance.FindNullCoins());
+            StartCoroutine(BoardManager.sharedInstance.FindNullCoins());
         }
     }
 
